@@ -23,9 +23,6 @@ class Slot {
 
     public spin(): number[][] {
 
-       // const visibleReels: number[][] = [[3, 2, 1], [3, 2, 1], [3, 2, 1], [2, 2, 1], [3, 2, 1]]; // line pattern matches
-        //const visibleReels: number[][] = [[3, 2, 1], [1, 3, 2], [3, 2, 4], [2, 2, 2], [3, 2, 1]]; // zig-zag pattern matches
-
         const visibleReels: number[][] = [];
 
         this.#reels.forEach(reel => {
@@ -44,8 +41,6 @@ class Slot {
         let firstRowElement: number = 0;
         let secondRowElement: number = 0;
         let thirdRowElement: number = 0;
-
-        //create unit tests to check whether logic works with index 0, 1, 10, reel.length-1, reel.length-2, reel.length-3;
         let index: number = Math.floor(Math.random() * reel.length);
 
         if (index <= reel.length - rowsCount) {
@@ -85,18 +80,22 @@ class Slot {
             if (key == '3' || key == '4') {
 
                 const result: ResultInterface = this.matchZigZagPattern(visibleReels, paylineArr);
-                console.log(`From payline ${key} you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
 
             }
             else if (key == '0' || key == '1' || key == '2') {
 
                 const result: ResultInterface = this.matchLinePattern(visibleReels, paylineArr);
-                console.log(`From payline ${key} you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
             }
         }
     }
 
-    //zig-zag pattern
+    /*
+    zig-zag patterns are represented like:
+    [0,1,0,1,0]
+    [1, 2, 1, 2, 1]
+    */
     private matchZigZagPattern(visibleReels: number[][], paylineArr: number[]): ResultInterface {
 
         let columnIndex: number = 0;
@@ -105,8 +104,6 @@ class Slot {
 
         for (let rowIndex = 0; rowIndex < paylineArr.length; rowIndex++) {
 
-            //[0,1,0,1,0]
-            //[1, 2, 1, 2, 1]
             if (paylineArr[rowIndex + 1] == undefined) break;
 
             if (visibleReels[columnIndex][paylineArr[rowIndex]] == visibleReels[columnIndex + 1][paylineArr[rowIndex + 1]]) {
@@ -120,13 +117,14 @@ class Slot {
         }
         return { matches, matchingSymbol };
     }
-
+    /*
+        line patterns are represented like:
+        [0,0,0,0,0]
+        [1, 1, 1, 1, 1]
+        [2, 2, 2, 2, 2] 
+        */
     private matchLinePattern(visibleReels: number[][], paylineArr: number[]): ResultInterface {
-
-        //[0,0,0,0,0]
-        //[1, 1, 1, 1, 1]
-        //[2, 2, 2, 2, 2]
-
+        
         const rowIndex: number = paylineArr[0];
         let matches: number = 0;
         let matchingSymbol: number = visibleReels[0][rowIndex];
