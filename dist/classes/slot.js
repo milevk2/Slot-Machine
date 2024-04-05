@@ -16,8 +16,6 @@ class Slot {
         this.#subscriptions = {};
     }
     spin() {
-        // const visibleReels: number[][] = [[3, 2, 1], [3, 2, 1], [3, 2, 1], [2, 2, 1], [3, 2, 1]]; // line pattern matches
-        //const visibleReels: number[][] = [[3, 2, 1], [1, 3, 2], [3, 2, 4], [2, 2, 2], [3, 2, 1]]; // zig-zag pattern matches
         const visibleReels = [];
         this.#reels.forEach(reel => {
             const visible = this.spinReel(reel, this.#rowsCount);
@@ -30,7 +28,6 @@ class Slot {
         let firstRowElement = 0;
         let secondRowElement = 0;
         let thirdRowElement = 0;
-        //create unit tests to check whether logic works with index 0, 1, 10, reel.length-1, reel.length-2, reel.length-3;
         let index = Math.floor(Math.random() * reel.length);
         if (index <= reel.length - rowsCount) {
             firstRowElement = reel[index];
@@ -58,22 +55,24 @@ class Slot {
             }
             if (key == '3' || key == '4') {
                 const result = this.matchZigZagPattern(visibleReels, paylineArr);
-                console.log(`From payline ${key} you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
             }
             else if (key == '0' || key == '1' || key == '2') {
                 const result = this.matchLinePattern(visibleReels, paylineArr);
-                console.log(`From payline ${key} you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
             }
         }
     }
-    //zig-zag pattern
+    /*
+    zig-zag patterns are represented like:
+    [0,1,0,1,0]
+    [1, 2, 1, 2, 1]
+    */
     matchZigZagPattern(visibleReels, paylineArr) {
         let columnIndex = 0;
         let matches = 0;
         let matchingSymbol = visibleReels[columnIndex][paylineArr[0]];
         for (let rowIndex = 0; rowIndex < paylineArr.length; rowIndex++) {
-            //[0,1,0,1,0]
-            //[1, 2, 1, 2, 1]
             if (paylineArr[rowIndex + 1] == undefined)
                 break;
             if (visibleReels[columnIndex][paylineArr[rowIndex]] == visibleReels[columnIndex + 1][paylineArr[rowIndex + 1]]) {
@@ -86,10 +85,13 @@ class Slot {
         }
         return { matches, matchingSymbol };
     }
+    /*
+        line patterns are represented like:
+        [0,0,0,0,0]
+        [1, 1, 1, 1, 1]
+        [2, 2, 2, 2, 2]
+        */
     matchLinePattern(visibleReels, paylineArr) {
-        //[0,0,0,0,0]
-        //[1, 1, 1, 1, 1]
-        //[2, 2, 2, 2, 2]
         const rowIndex = paylineArr[0];
         let matches = 0;
         let matchingSymbol = visibleReels[0][rowIndex];

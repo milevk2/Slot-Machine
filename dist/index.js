@@ -13,3 +13,4 @@ slotMachine.subscribeToPayline(3);
 slotMachine.subscribeToPayline(4);
 slotMachine.unsubscribePayline(4);
 console.log(slotMachine.spin());
+//TO DO: simulation that iterates a large amount of spins with information about total wins, bets, and execution speed
