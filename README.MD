@@ -1,8 +1,8 @@
 
-# **Slot Machine Casino Game.**
+## **Slot Machine Casino Game.**
 
-    Task description: https://framerusercontent.com/assets/7d94Z6q1HkF5ng3bHViNGRAcM3k.pdf
-    Thought process: https://softwareuniversity-my.sharepoint.com/:w:/g/personal/milevk2_students_softuni_bg/EW7_xdCnXCRPlNuYV_nrOXsB8TsWIh90-HZ0yDdR3bnV1g?e=vZiFRJ
+[Task description](https://framerusercontent.com/assets/7d94Z6q1HkF5ng3bHViNGRAcM3k.pdf)
+[Thought Process](https://softwareuniversity-my.sharepoint.com/:w:/g/personal/milevk2_students_softuni_bg/EW7_xdCnXCRPlNuYV_nrOXsB8TsWIh90-HZ0yDdR3bnV1g?e=vZiFRJ)
 
 - [Key Features](#key-features)
 - [Getting Started](#getting-started)
@@ -84,20 +84,20 @@ slotMachine.unsubscribePayline(3);
 It chooses an index with Math.random() and then checks how far is the chosen index from the array's last index. 
 
 If index <= reel.length - rowsCount, then the method assigns:
-**reel[ index ] as firstRowElement;**
-**reel[ index + 1 ] as secondRowElement;**
-**reel[ index + 2 ] as thirdRowElement;**
+- **reel[ index ] as firstRowElement;**
+- **reel[ index + 1 ] as secondRowElement;**
+- **reel[ index + 2 ] as thirdRowElement;**
 
 If reel[index + 1] == undefined, then the method assigns:
-**reel[ index ] as firstRowElement;**
-**reel[0] as secondRowElement;**
-**reel[1] as thirdRowElement;**
+- **reel[ index ] as firstRowElement;**
+- **reel[0] as secondRowElement;**
+- **reel[1] as thirdRowElement;**
 
 
 If reel[index + 2] == undefined,  then the method assigns:
-**reel[ index ] as firstRowElement;**
-**reel[index + 1] as secondRowElement;**
-**reel[0] as thirdRowElement;**
+- **reel[ index ] as firstRowElement;**
+- **reel[index + 1] as secondRowElement;**
+- **reel[0] as thirdRowElement;**
 
 ***N.B!** - this logic will only work if we have a slot machine with 3 visible rows. For more flexible approach a new and better implementation is needed!
 
@@ -106,7 +106,7 @@ If reel[index + 2] == undefined,  then the method assigns:
 
 2. `calculatePaylines(visibleReels: number[][])` - Calculates the matches and winnings for each subscribed payline. It calls private methods
 
-`matchZigZagPattern(visibleReels: number[][], paylineArr: number[])` and `matchLinePattern(visibleReels: number[][], paylineArr: number[])` ;
+`matchZigZagPattern(...)` and `matchLinePattern(...)` ;
 
 depending on which paylines the user has subscribed to. For instance if user subscribes to payline 1 and has 3 matches from symbol 4, the function will log the below:
 
@@ -140,7 +140,7 @@ For example, line patterns are represented like:
 
 **RETURNS ResultInterface:  { matches, matchingSymbol }**
 
-### Example
+### How to use:
 
 ```typescript
 const slotMachine = new Slot(5, 3, symbolsInterface, linesMatrix, reelsMatrix);
