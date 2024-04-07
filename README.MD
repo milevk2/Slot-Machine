@@ -11,6 +11,7 @@
 - [Public Methods](#public-methods)
 - [Private Methods](#private-methods)
 - [Example](#example)
+- [Unit Tests](#unit-tests)
 
 **Key features:**
 - Initiates a slot machine object with class "Slot" which accepts the current slot machine configuration from `configuration.ts` file.
@@ -23,7 +24,10 @@ To get started with this project, follow these steps:
 
 1. Clone the repository.
 2. Install dependencies with `npm install`.
-3. run index.js from the dist folder.
+3. Open the terminal in `Slot Machine\dist\` directory.
+4. Type `npx tsc`
+5. run index.js from the `dist` folder with command `node index.js` in the terminal.
+6. After changing `index.ts`, repeat steps 3 - 5.
 
 # Slot Class Documentation
 
@@ -152,4 +156,14 @@ slotMachine.unsubscribePayline(2)
 slotMachine.spin();
 
 ```
+# Unit Tests
 
+Unit tests are in `src/unit-tests` directory. There will be a separate unit-test file for each function.
+Currently there are only tests for `spinReel` logic. The function logic has been separated from the class `Slot` in order to test it in a separate file `functions\spinReel-test.mjs`. 
+
+## Run Tests:
+
+1. Go to `src\unit-tests.mjs` and open the terminal;
+2. In the terminal write command  `mocha {filename}`;
+
+**N.B! I have to refactor the spinReel method, so it adheres to OOP principles, as currently it determines the chosen index internaly with Math.random(). In order to achieve better testibility, the `index` should be passed as a dependency parameter.**

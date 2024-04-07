@@ -6,6 +6,8 @@ class Slot {
     #symbols;
     #lines;
     #reels;
+    #totalWins;
+    #totalPrize;
     #subscriptions;
     constructor(reelsCount, rowsCount, symbols, lines, reels) {
         this.#reelsCount = reelsCount;
@@ -14,6 +16,8 @@ class Slot {
         this.#lines = lines;
         this.#reels = reels;
         this.#subscriptions = {};
+        this.#totalWins = 0;
+        this.#totalPrize = 0;
     }
     spin() {
         const visibleReels = [];
@@ -55,13 +59,35 @@ class Slot {
             }
             if (key == '3' || key == '4') {
                 const result = this.matchZigZagPattern(visibleReels, paylineArr);
+                const prize = this.#symbols[result.matchingSymbol][result.matches];
+                this.updateScore(result.matches + 1, prize);
                 console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
             }
             else if (key == '0' || key == '1' || key == '2') {
                 const result = this.matchLinePattern(visibleReels, paylineArr);
-                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+                const prize = this.#symbols[result.matchingSymbol][result.matches];
+                this.updateScore(result.matches + 1, prize);
+                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${prize}$`);
             }
         }
+    }
+    updateScore(matches, prize) {
+        if (matches <= 2)
+            return;
+        this.#totalWins += 1;
+        this.#totalPrize += prize;
+    }
+    displayScore() {
+        console.log(`Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`);
+    }
+    runSimulation(iterations) {
+        let start = new Date().getTime();
+        for (let iteration = 1; iteration <= iterations; iteration++) {
+            console.log(this.spin());
+        }
+        let end = new Date().getTime();
+        let executionTime = end - start;
+        console.log('Simulation execution time: ' + executionTime + 'ms');
     }
     /*
     zig-zag patterns are represented like:
