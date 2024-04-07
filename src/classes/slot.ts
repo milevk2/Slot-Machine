@@ -9,6 +9,9 @@ class Slot {
     #symbols: SymbolsInterface;
     #lines: number[][];
     #reels: number[][];
+    #totalWins: number;
+    #totalPrize: number;
+
     #subscriptions: SubscriptionInterface;
 
     constructor(reelsCount: number, rowsCount: number, symbols: SymbolsInterface, lines: number[][], reels: number[][]) {
@@ -19,6 +22,8 @@ class Slot {
         this.#lines = lines;
         this.#reels = reels;
         this.#subscriptions = {};
+        this.#totalWins = 0;
+        this.#totalPrize = 0;
     }
 
     public spin(): number[][] {
@@ -80,15 +85,49 @@ class Slot {
             if (key == '3' || key == '4') {
 
                 const result: ResultInterface = this.matchZigZagPattern(visibleReels, paylineArr);
+                const prize = this.#symbols[result.matchingSymbol][result.matches];
+                this.updateScore(result.matches + 1, prize);
                 console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
 
             }
             else if (key == '0' || key == '1' || key == '2') {
 
                 const result: ResultInterface = this.matchLinePattern(visibleReels, paylineArr);
-                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+                const prize = this.#symbols[result.matchingSymbol][result.matches];
+                this.updateScore(result.matches + 1, prize);
+                console.log(`From payline ${key} - [${paylineArr}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${prize}$`);
             }
         }
+    }
+
+    private updateScore(matches: number, prize: number) {
+
+        if (matches <= 2) return;
+
+        this.#totalWins += 1;
+        this.#totalPrize += prize;
+    }
+
+    displayScore() {
+
+        console.log(`Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`);
+
+    }
+
+    runSimulation(iterations: number) {
+
+        let start = new Date().getTime();
+
+        for (let iteration = 1; iteration <= iterations; iteration++) {
+
+            console.log(this.spin());
+
+        }
+
+        let end = new Date().getTime();
+        let executionTime = end - start;
+        console.log('Simulation execution time: ' + executionTime + 'ms');
+    
     }
 
     /*
@@ -124,7 +163,7 @@ class Slot {
         [2, 2, 2, 2, 2] 
         */
     private matchLinePattern(visibleReels: number[][], paylineArr: number[]): ResultInterface {
-        
+
         const rowIndex: number = paylineArr[0];
         let matches: number = 0;
         let matchingSymbol: number = visibleReels[0][rowIndex];
