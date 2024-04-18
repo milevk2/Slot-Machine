@@ -22,33 +22,19 @@ class Slot {
     spin() {
         const visibleReels = [];
         this.#reels.forEach(reel => {
-            const visible = this.spinReel(reel, this.#rowsCount);
+            const index = Math.floor(Math.random() * reel.length);
+            const visible = this.spinReel(index, this.#rowsCount, reel);
             visibleReels.push(visible);
         });
         this.calculatePaylines(visibleReels);
         return visibleReels;
     }
-    spinReel(reel, rowsCount) {
-        let firstRowElement = 0;
-        let secondRowElement = 0;
-        let thirdRowElement = 0;
-        let index = Math.floor(Math.random() * reel.length);
-        if (index <= reel.length - rowsCount) {
-            firstRowElement = reel[index];
-            secondRowElement = reel[index + 1];
-            thirdRowElement = reel[index + 2];
+    spinReel(index, rows, reel) {
+        const visible = [];
+        for (let i = 0; i < rows; i++) {
+            visible.push(reel[(index + i) % reel.length]);
         }
-        else if (reel[index + 1] == undefined) {
-            firstRowElement = reel[index];
-            secondRowElement = reel[0];
-            thirdRowElement = reel[1];
-        }
-        else if (reel[index + 2] == undefined) {
-            firstRowElement = reel[index];
-            secondRowElement = reel[index + 1];
-            thirdRowElement = reel[0];
-        }
-        return [firstRowElement, secondRowElement, thirdRowElement];
+        return visible;
     }
     calculatePaylines(visibleReels) {
         const subscriptions = this.#subscriptions;
