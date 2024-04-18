@@ -32,7 +32,8 @@ class Slot {
 
         this.#reels.forEach(reel => {
 
-            const visible: number[] = this.spinReel(reel, this.#rowsCount);
+            const index: number = Math.floor(Math.random() * reel.length);
+            const visible: number[] = this.spinReel(index, this.#rowsCount, reel);
 
             visibleReels.push(visible);
         })
@@ -41,33 +42,15 @@ class Slot {
         return visibleReels;
     }
 
-    private spinReel(reel: number[], rowsCount: number): number[] {
+    private spinReel(index: number, rows: number, reel:number[]):number[] {
 
-        let firstRowElement: number = 0;
-        let secondRowElement: number = 0;
-        let thirdRowElement: number = 0;
-        let index: number = Math.floor(Math.random() * reel.length);
+        const visible:number[] = [];
 
-        if (index <= reel.length - rowsCount) {
+        for (let i = 0; i < rows; i++) {
 
-            firstRowElement = reel[index];
-            secondRowElement = reel[index + 1];
-            thirdRowElement = reel[index + 2];
+            visible.push(reel[(index + i) % reel.length]);
         }
-        else if (reel[index + 1] == undefined) {
-
-            firstRowElement = reel[index];
-            secondRowElement = reel[0];
-            thirdRowElement = reel[1];
-        }
-        else if (reel[index + 2] == undefined) {
-
-            firstRowElement = reel[index];
-            secondRowElement = reel[index + 1];
-            thirdRowElement = reel[0];
-        }
-
-        return [firstRowElement, secondRowElement, thirdRowElement];
+        return visible;
     }
 
     private calculatePaylines(visibleReels: number[][]) {
@@ -207,6 +190,5 @@ class Slot {
         }
     }
 }
-
 
 export default Slot;
