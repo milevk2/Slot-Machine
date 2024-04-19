@@ -83,36 +83,23 @@ slotMachine.unsubscribePayline(3);
 ```
 
 ### Private Methods
-1. `spinReel(reel: number[], rowsCount: number)` - Spins a single reel and returns the visible symbols of that reel.
+1. `spinReel(index: number, rows: number, reel: number[])` - Spins a single reel and returns the visible symbols of that reel.
 
-It chooses an index with Math.random() and then checks how far is the chosen index from the array's last index. 
+It chooses an index with Math.random() and then implements the circular index array algorithm (index rotation when index reaches the end of the array). 
 
-If index <= reel.length - rowsCount, then the method assigns:
-- **reel[ index ] as firstRowElement;**
-- **reel[ index + 1 ] as secondRowElement;**
-- **reel[ index + 2 ] as thirdRowElement;**
-
-If reel[index + 1] == undefined, then the method assigns:
-- **reel[ index ] as firstRowElement;**
-- **reel[0] as secondRowElement;**
-- **reel[1] as thirdRowElement;**
-
-
-If reel[index + 2] == undefined,  then the method assigns:
-- **reel[ index ] as firstRowElement;**
-- **reel[index + 1] as secondRowElement;**
-- **reel[0] as thirdRowElement;**
-
-***N.B!** - this logic will only work if we have a slot machine with 3 visible rows. For more flexible approach a new and better implementation is needed!
 
 **RETURNS : number[]: An array of numbers  representing the visible symbols on the current reel after spinning.**
 
 
-2. `calculatePaylines(visibleReels: number[][])` - Calculates the matches and winnings for each subscribed payline. It calls private methods
+2. `calculatePaylines(visibleReels: number[][])` - Calculates the matches and winnings for each subscribed payline. It iterates through the subscriptions array and calls  method:
 
-`matchZigZagPattern(...)` and `matchLinePattern(...)` ;
+```typescript
 
-depending on which paylines the user has subscribed to. For instance if user subscribes to payline 1 and has 3 matches from symbol 4, the function will log the below:
+subscription.matchPattern(visibleReels)
+
+```
+
+which mathes against the current subscription payline pattern (Line, ZigZag etc.) depending on whether the user has subscribed to it. For instance if user subscribes to payline 1 and has 3 matches from symbol 4, the function will log the below:
 
 If we assume that the visible reels after the spin are: [ [ 4, **<4>**, 8 ], [ 1, **<4>**, 4 ], [ 5, **<4>**, 4 ], [ 5, 5, 7 ], [ 3, 3, 9 ] ] and the subscribed payline is 1 -  [1, 1, 1, 1, 1] (matching pattern on the second row of the visible reels) , then we have 3 matches with matching symbol `4`. 
 We use the **matchingSymbol** and **matches** from the **result: ResultInterface** so we can retrieve the symbol and it's respective prize accordingly (matches used as index ) from the symbols.
@@ -129,9 +116,11 @@ The final result that the method logs is:
 Returns an object with information of the matchingSymbol and how many consecutive matches there are.
 
 For example, zig-zag patterns are represented like:
+
+```typescript
 [0, 1, 0, 1, 0]
 [1, 2, 1, 2, 1]
-
+```
 **RETURNS ResultInterface:  { matches, matchingSymbol }**
 
 4. `matchLinePattern(visibleReels: number[][], paylineArr: number[]): ResultInterface` - Matches the symbols in a straight line pattern and calculates winnings.
@@ -139,31 +128,35 @@ For example, zig-zag patterns are represented like:
 Returns an object with information of the matchingSymbol and how many consecutive matches there are.
 
 For example, line patterns are represented like:
+
+```typescript
 [0, 0, 0, 0, 0]
 [1, 1, 1, 1, 1]
+```
 
 **RETURNS ResultInterface:  { matches, matchingSymbol }**
 
 ### How to use:
 
 ```typescript
-const slotMachine = new Slot(5, 3, symbolsInterface, linesMatrix, reelsMatrix);
 
-slotMachine.subscribeToPayline(1)
-slotMachine.subscribeToPayline(2)
-slotMachine.subscribeToPayline(3)
-slotMachine.unsubscribePayline(2)
+const lineZeroPattern = new Line(0, configuration.lines[0]);
+const lineOnePattern = new Line(1, configuration.lines[1]);
+const lineTwoPattern = new Line(2, configuration.lines[2]);
+const zeroOnePattern = new ZigZag(3, configuration.lines[3]);
+const oneTwoPattern = new ZigZag(4, configuration.lines[4]);
+const subscriptions:PatternInterface[] = [lineZeroPattern, lineOnePattern, lineTwoPattern, zeroOnePattern, oneTwoPattern];
+
+const slotMachine = new Slot(configuration.reelsCount, configuration.rowsCount, configuration.symbols, configuration.lines, configuration.reels, subscriptions);
 slotMachine.spin();
 
 ```
 # Unit Tests
 
 Unit tests are in `src/unit-tests` directory. There will be a separate unit-test file for each function.
-Currently there are only tests for `spinReel` logic. The function logic has been separated from the class `Slot` in order to test it in a separate file `functions\spinReel-test.mjs`. 
+Currently there are only tests for `spinReel` logic. 
 
 ## Run Tests:
 
-1. Go to `src\unit-tests.mjs` and open the terminal;
+1. Go to `src\unit-tests` and open the terminal;
 2. In the terminal write command  `mocha {filename}`;
-
-**N.B! I have to refactor the spinReel method, so it adheres to OOP principles, as currently it determines the chosen index internaly with Math.random(). In order to achieve better testibility, the `index` should be passed as a dependency parameter.**
