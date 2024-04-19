@@ -1,4 +1,5 @@
 import ResultInterface from "../../interfaces/ResultInterface";
+import Pattern from "./Pattern";
 
 /*
     line patterns are represented like:
@@ -7,17 +8,10 @@ import ResultInterface from "../../interfaces/ResultInterface";
     [2, 2, 2, 2, 2] 
 */
 
-class Line {
-    
-    subscribed: boolean;
-    paylineIndex: number;
-    pattern:number[];
+class Line extends Pattern {
 
     constructor(paylineIndex: number, pattern:number[]) {
-
-        this.subscribed = false;
-        this.paylineIndex = paylineIndex;
-        this.pattern = pattern;
+        super(paylineIndex, pattern);
     }
 
     public matchPattern(visibleReels: number[][]): ResultInterface {

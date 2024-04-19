@@ -1,19 +1,18 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Pattern_1 = __importDefault(require("./Pattern"));
 /*
     line patterns are represented like:
     [0, 0, 0, 0, 0]
     [1, 1, 1, 1, 1]
     [2, 2, 2, 2, 2]
 */
-class Line {
-    subscribed;
-    paylineIndex;
-    pattern;
+class Line extends Pattern_1.default {
     constructor(paylineIndex, pattern) {
-        this.subscribed = false;
-        this.paylineIndex = paylineIndex;
-        this.pattern = pattern;
+        super(paylineIndex, pattern);
     }
     matchPattern(visibleReels) {
         const rowIndex = this.pattern[0];

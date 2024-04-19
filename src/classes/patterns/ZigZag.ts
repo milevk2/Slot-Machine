@@ -1,5 +1,6 @@
 
 import ResultInterface from "../../interfaces/ResultInterface";
+import Pattern from "./Pattern";
 
 /*
     zig-zag patterns are represented like:
@@ -7,17 +8,10 @@ import ResultInterface from "../../interfaces/ResultInterface";
     [1, 2, 1, 2, 1]
 */
 
-class ZigZag {
+class ZigZag extends Pattern {
     
-    subscribed: boolean;
-    paylineIndex: number;
-    pattern:number[];
-
     constructor(paylineIndex: number, pattern:number[]) {
-
-        this.subscribed = false;
-        this.paylineIndex = paylineIndex;
-        this.pattern = pattern;
+        super(paylineIndex, pattern);
     }
 
     public matchPattern(visibleReels: number[][]): ResultInterface {

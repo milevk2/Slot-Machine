@@ -1,18 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Pattern_1 = __importDefault(require("./Pattern"));
 /*
     zig-zag patterns are represented like:
     [0, 1, 0, 1, 0]
     [1, 2, 1, 2, 1]
 */
-class ZigZag {
-    subscribed;
-    paylineIndex;
-    pattern;
+class ZigZag extends Pattern_1.default {
     constructor(paylineIndex, pattern) {
-        this.subscribed = false;
-        this.paylineIndex = paylineIndex;
-        this.pattern = pattern;
+        super(paylineIndex, pattern);
     }
     matchPattern(visibleReels) {
         let columnIndex = 0;
