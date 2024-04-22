@@ -19,6 +19,12 @@ class Slot {
         this.#totalWins = 0;
         this.#totalPrize = 0;
     }
+    getReelsRows() {
+        return {
+            reelsCount: this.#reelsCount,
+            rowsCount: this.#rowsCount
+        };
+    }
     displayScore() {
         console.log(`Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`);
     }

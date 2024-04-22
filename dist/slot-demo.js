@@ -26,4 +26,3 @@ slotMachine.unsubscribePayline(4);
 slotMachine.runSimulation(1000);
 //displaying the total results - total wins and total accumulated prize:
 slotMachine.displayScore();
-exports.default = slotMachine;
