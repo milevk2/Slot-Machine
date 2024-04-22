@@ -1,0 +1,110 @@
+html {
+
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+body {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.slot {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid gray;
+    border-radius: 8px;
+    background-color: antiquewhite;
+    height: 50vh;
+    width: 50vw;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    height: 100px;
+}
+
+.reel {
+  
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+}
+
+.reel.banana {
+
+    background-image: url('../images/banana.PNG');
+}
+
+.reel.bell {
+
+    background-image: url('../images/bell.PNG');
+}
+
+.reel.coin {
+
+    background-image: url('../images/coin.PNG');
+}
+
+.reel.diamond {
+
+    background-image: url('../images/diamond.PNG');
+}
+
+.reel.grape {
+
+    background-image: url('../images/grape.PNG');
+}
+
+.reel.heart {
+
+    background-image: url('../images/heart.PNG');
+}
+
+.reel.leef {
+
+    background-image: url('../images/leef.PNG');
+}
+
+.reel.orange {
+
+    background-image: url('../images/orange.PNG');
+}
+
+.reel.seven {
+
+    background-image: url('../images/seven.PNG');
+}
+
+.reel.watermelon {
+
+    background-image: url('../images/watermelon.PNG');
+}
+
+button.spin {
+
+    height: 80px;
+    width: 80px;
+    border: 1px solid red;
+    border-radius: 100%;
+    background-color:chartreuse;
+    color: red;
+    outline: none;
+    font-weight: bold;
+}
+
+button.spin:active {
+
+    background-color: red;
+    color: chartreuse
+}
