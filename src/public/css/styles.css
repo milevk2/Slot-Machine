@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap');
+
 html {
 
     margin: 0;
     padding: 0;
     box-shadow: none;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body {
@@ -10,6 +13,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: antiquewhite
+}
+
+main {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
 
 }
 
@@ -18,86 +31,91 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
     flex-direction: column;
     border: 1px solid gray;
     border-radius: 8px;
     background-color: antiquewhite;
-    height: 50vh;
-    width: 50vw;
+
 }
 
 .row {
     display: flex;
     flex-direction: row;
-    width: 95%;
-    height: 100px;
+    border: 3px solid white;
+
 }
 
 .reel {
-  
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-size: contain;
     background-repeat: no-repeat;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
 }
 
 .reel.banana {
 
-    background-image: url('../images/banana.PNG');
+    background-image: url('../images/symbols/banana.PNG');
 }
 
 .reel.bell {
 
-    background-image: url('../images/bell.PNG');
+    background-image: url('../images/symbols/bell.PNG');
 }
 
 .reel.coin {
 
-    background-image: url('../images/coin.PNG');
+    background-image: url('../images/symbols/coin.PNG');
 }
 
 .reel.diamond {
 
-    background-image: url('../images/diamond.PNG');
+    background-image: url('../images/symbols/diamond.PNG');
 }
 
 .reel.grape {
 
-    background-image: url('../images/grape.PNG');
+    background-image: url('../images/symbols/grape.PNG');
 }
 
 .reel.heart {
 
-    background-image: url('../images/heart.PNG');
+    background-image: url('../images/symbols/heart.PNG');
 }
 
 .reel.leef {
 
-    background-image: url('../images/leef.PNG');
+    background-image: url('../images/symbols/leef.PNG');
 }
 
 .reel.orange {
 
-    background-image: url('../images/orange.PNG');
+    background-image: url('../images/symbols/orange.PNG');
 }
 
 .reel.seven {
 
-    background-image: url('../images/seven.PNG');
+    background-image: url('../images/symbols/seven.PNG');
 }
 
 .reel.watermelon {
 
-    background-image: url('../images/watermelon.PNG');
+    background-image: url('../images/symbols/watermelon.PNG');
 }
 
 button.spin {
 
-    height: 80px;
-    width: 80px;
+
+    height: 100px;
+    width: 100px;
+    margin: 15px;
     border: 1px solid red;
     border-radius: 100%;
-    background-color:chartreuse;
+    background-color: chartreuse;
     color: red;
     outline: none;
     font-weight: bold;
@@ -105,6 +123,86 @@ button.spin {
 
 button.spin:active {
 
+
     background-color: red;
     color: chartreuse
+}
+
+
+#prizeNotification,
+#score {
+
+    font-family: "Play", sans-serif;
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50vw;
+}
+
+#score {
+
+    padding: 20px;
+    color: green;
+    font-size: 1.5em
+}
+
+#lineBtns {
+    margin: 15px;
+    display: flex;
+    gap: 25px;
+}
+
+.paylineBtn {
+
+    padding: 0.5em;
+    width: 10em;
+    height: 4em;
+    font-weight:bold;
+    border: 1px solid gray;
+    border-radius: 15px;
+    opacity: 95%;
+    transition: 1s ease-out;
+}
+
+.paylineBtn:active {
+
+    transform: scale(1.2);
+
+}
+
+#paylineBtn_0 {
+
+    background-color: yellow;
+
+}
+
+#paylineBtn_1 {
+
+    background-color: green;
+
+}
+
+#paylineBtn_2 {
+
+    background-color: blue;
+
+}
+
+#paylineBtn_3 {
+
+    background-color: red;
+
+}
+
+#paylineBtn_4 {
+
+    background-color:cyan
+
+}
+
+.yellowBorder {
+
+    border: 3px solid rgb(231, 137, 15);
 }
