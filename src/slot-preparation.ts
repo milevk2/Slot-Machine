@@ -18,4 +18,4 @@ const slotMachine = new Slot(configuration.reelsCount, configuration.rowsCount, 
 //displaying the total results - total wins and total accumulated prize:
 //slotMachine.displayScore();
 
-export default slotMachine;
+export  {slotMachine, subscriptions};
