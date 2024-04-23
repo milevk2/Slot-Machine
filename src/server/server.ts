@@ -8,10 +8,6 @@ import Slot from "../classes/slot";
 import configuration from "../configuration";
 import ScoreInterface from "../interfaces/ScoreInterface";
 
-
-
-
-
 const app: Express = express();
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(json());
@@ -73,10 +69,6 @@ app.post('/subscribe', (req: Request, res:Response)=> {
    activeMachines[machineId].subscribeToPayline(index);
    
    res.status(200).json(`Successfully subscribed to payline ${index}`);
-   
-
 })
-
-
 
 app.listen(3000, () => console.log('The server is listening on port 3000!'));
