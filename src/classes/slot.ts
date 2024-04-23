@@ -1,6 +1,8 @@
 import SymbolsInterface from "../interfaces/SymbolsInterface";
 import ResultInterface from "../interfaces/ResultInterface";
 import PatternInterface from "../interfaces/PatternInterface";
+import SpinResultInterface from "../interfaces/SpinResultInterface";
+import ScoreInterface from "../interfaces/ScoreInterface";
 
 class Slot {
 
@@ -32,9 +34,16 @@ class Slot {
         }
     }
 
-    public displayScore() {
+    public displayScore():ScoreInterface {
 
-        console.log(`Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`);
+        const scoreString = `Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`
+
+        return {
+
+            scoreString,
+            totalWins: this.#totalWins,
+            totalPrize: this.#totalPrize
+        }
     }
 
     public runSimulation(iterations: number) {
@@ -73,7 +82,7 @@ class Slot {
         }
     }
 
-    public spin(): number[][] {
+    public spin(): SpinResultInterface {
 
         const visibleReels: number[][] = [];
 
@@ -83,8 +92,9 @@ class Slot {
             const visible: number[] = this.spinReel(index, this.#rowsCount, reel);
             visibleReels.push(visible);
         });
-        this.calculatePaylines(visibleReels);
-        return visibleReels;
+
+        const prizeNotifications = this.calculatePaylines(visibleReels);
+        return { visibleReels, prizeNotifications };
     }
 
     private spinReel(index: number, rows: number, reel: number[]): number[] {
@@ -106,20 +116,23 @@ class Slot {
         this.#totalPrize += prize;
     }
 
-    private calculatePaylines(visibleReels: number[][]) {
+    private calculatePaylines(visibleReels: number[][]): string[] {
 
         const subscriptions = this.#subscriptions;
+        let prizeNotifications: string[] = [];
 
         for (let subscription of subscriptions) {
 
-            if(subscription == undefined) continue;
+            if (subscription == undefined) continue;
             if (!subscription.subscribed) continue;
 
             const result: ResultInterface = subscription.matchPattern(visibleReels);
             const prize = this.#symbols[result.matchingSymbol][result.matches];
             this.updateScore(result.matches + 1, prize);
-            console.log(`From payline ${subscription.paylineIndex} - [${subscription.pattern}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+            prizeNotifications.push(`From payline ${subscription.paylineIndex} - [${subscription.pattern}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
         }
+
+        return prizeNotifications;
     }
 }
 
