@@ -39,17 +39,8 @@ app.get('/slot_settings', async (req: Request, res: Response) => {
 
 app.post('/spin', (req: Request, res: Response) => {
 
-   console.log(activeMachines);
-   
-   const paylines:number[] = req.body.paylines;
    const id: string = req.body.id;
    const machine = activeMachines[id];
-
-   paylines.forEach(payline => {
-
-      machine.subscribeToPayline(payline)
-   })
-
    const spinResult: SpinResultInterface = machine.spin();
    res.json(spinResult);
 
