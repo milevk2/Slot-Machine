@@ -26,7 +26,12 @@ class Slot {
         };
     }
     displayScore() {
-        console.log(`Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`);
+        const scoreString = `Total wins: ${this.#totalWins}\nTotal prize accumulated: ${this.#totalPrize}$`;
+        return {
+            scoreString,
+            totalWins: this.#totalWins,
+            totalPrize: this.#totalPrize
+        };
     }
     runSimulation(iterations) {
         let start = new Date().getTime();
@@ -60,8 +65,8 @@ class Slot {
             const visible = this.spinReel(index, this.#rowsCount, reel);
             visibleReels.push(visible);
         });
-        this.calculatePaylines(visibleReels);
-        return visibleReels;
+        const prizeNotifications = this.calculatePaylines(visibleReels);
+        return { visibleReels, prizeNotifications };
     }
     spinReel(index, rows, reel) {
         const visible = [];
@@ -78,6 +83,7 @@ class Slot {
     }
     calculatePaylines(visibleReels) {
         const subscriptions = this.#subscriptions;
+        let prizeNotifications = [];
         for (let subscription of subscriptions) {
             if (subscription == undefined)
                 continue;
@@ -86,8 +92,9 @@ class Slot {
             const result = subscription.matchPattern(visibleReels);
             const prize = this.#symbols[result.matchingSymbol][result.matches];
             this.updateScore(result.matches + 1, prize);
-            console.log(`From payline ${subscription.paylineIndex} - [${subscription.pattern}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
+            prizeNotifications.push(`From payline ${subscription.paylineIndex} - [${subscription.pattern}] you have ${result.matches + 1} matches for symbol ${result.matchingSymbol} and you win ${this.#symbols[result.matchingSymbol][result.matches]}$`);
         }
+        return prizeNotifications;
     }
 }
 exports.default = Slot;
