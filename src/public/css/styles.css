@@ -206,3 +206,13 @@ button.spin:active {
 
     border: 3px solid rgb(231, 137, 15);
 }
+
+.greenBorder {
+
+    border: 3px solid green
+}
+
+.blueBorder {
+
+    border: 3px solid blue
+}
