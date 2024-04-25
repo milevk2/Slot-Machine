@@ -62,4 +62,13 @@ app.post('/subscribe', (req: Request, res:Response)=> {
    res.status(200).json(`Successfully subscribed to payline ${index}`);
 })
 
+app.post('/unsubscribe', (req: Request, res:Response)=> {
+
+   const {index, machineId} = req.body;
+
+   activeMachines[machineId].unsubscribePayline(index);
+   
+   res.status(200).json(`Successfully unsubscribed from payline ${index}`);
+})
+
 app.listen(3000, () => console.log('The server is listening on port 3000!'));
