@@ -1,16 +1,4 @@
-const symbols = {
-
-    1: 'banana',
-    2: 'bell',
-    3: 'coin',
-    4: 'diamond',
-    5: 'grape',
-    6: 'heart',
-    7: 'leef',
-    8: 'orange',
-    9: 'seven',
-    10: 'watermelon'
-}
+import symbols from "./symbolsDict.js";
 
 document.getElementById('lineBtns').addEventListener('click', paylinesBtnsClick);
 
@@ -54,11 +42,7 @@ async function prepareMachineDom() {
         button.id = `paylineBtn_${i}`;
         button.textContent = `Payline ${i}`
         payineBtnsField.appendChild(button);
-
-
     }
-
-    console.log(reelsCount, rowsCount, imagesNames);
 }
 
 
@@ -125,7 +109,6 @@ function updateVisibleReels(result) {
     const visibleReels = Array.from(document.querySelectorAll('div.row')).map(el => {
 
         return Array.from(el.children);
-
     })
 
     for (let i = 0; i < visibleReels.length; i++) {
@@ -136,7 +119,6 @@ function updateVisibleReels(result) {
         }
     }
 }
-
 
 async function prepareMachineCache() {
 
@@ -150,7 +132,6 @@ async function prepareMachineCache() {
         totalWins: 0,
         paylines: [],
         currentPrize: 0,
-
     }))
 }
 
@@ -183,22 +164,44 @@ async function displayScore(score) {
 function paylinesBtnsClick(e) {
 
     const id = e.target.id;
+    const paylineIndex = Number(id.slice(-1));
+
     if (id == 'lineBtns') return;
- 
-    const paylines = Array.from(JSON.parse(sessionStorage.getItem('machine')).paylines);
 
-    if (!paylines.includes(id.slice(-1))){
+    const machineCache = JSON.parse(sessionStorage.getItem('machine'));
+    const paylines = Array.from(machineCache.paylines);
 
-        subscribeToPayline(id.slice(-1));     
+    if (!paylines.includes(paylineIndex)) {
+
+        paylines.push(paylineIndex);
+        machineCache.paylines = paylines;
+        sessionStorage.setItem('machine', JSON.stringify(machineCache));
+
+        subscribeToPayline(paylineIndex);
     }
-  
-   
+    else {
 
-    if (id == 'paylineBtn_0') {
+        paylines.splice(paylines.indexOf(paylineIndex),1);
+        machineCache.paylines = paylines;
+        sessionStorage.setItem('machine', JSON.stringify(machineCache));
 
-        document.querySelector('.row').classList.toggle('yellowBorder');
+        unsubscribePayline(paylineIndex);
+    }
 
+    const machineRows = document.querySelectorAll('div.slot div.row');
 
+    
+    if (paylineIndex == 0) {
+
+        machineRows[0].classList.toggle('yellowBorder');
+    }
+    else if (paylineIndex == 1) {
+
+        machineRows[1].classList.toggle('greenBorder');
+    }
+    else if (paylineIndex == 2) {
+
+        machineRows[2].classList.toggle('blueBorder');
     }
 }
 
@@ -224,7 +227,29 @@ async function subscribeToPayline(index) {
     const result = await response.json();
 
     console.log(result);
+}
 
+async function unsubscribePayline(index) {
+    const machineId = JSON.parse(sessionStorage.getItem('machine')).id;
+
+    const response = await fetch('http://localhost:3000/unsubscribe', {
+
+        method: 'POST',
+
+        headers: {
+
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({ index, machineId })
+
+    })
+
+    if (!response.ok) throw new Error('Something went wrong with the request!')
+
+    const result = await response.json();
+
+    console.log(result);
 }
 
 prepareMachineCache();
